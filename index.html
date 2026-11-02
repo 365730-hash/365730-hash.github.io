@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Нейросети: учиться, работать, зарабатывать — книга Олега Панкратова</title>
+<meta name="description" content="Все вокруг уже пользуются нейросетями — а вы откладываете? Догнать можно за неделю: практическое руководство по ИИ живым языком, 18 глав, мини-проекты, библиотека промптов. На ЛитРес — 299 ₽.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=Unbounded:wght@500;700;900&display=swap">
+<style>
+:root{
+  --paper: oklch(0.965 0.008 95);
+  --paper-2: oklch(0.935 0.012 95);
+  --ink: oklch(0.21 0.02 260);
+  --ink-2: oklch(0.42 0.02 260);
+  --lime: oklch(0.90 0.19 115);
+  --lime-soft: oklch(0.90 0.19 115 / 0.45);
+  --font-display: "Unbounded", "Arial Black", sans-serif;
+  --font-body: "Spectral", Georgia, serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+html,body{overflow-x:clip}
+body{
+  font:17px/1.7 var(--font-body);
+  color:var(--ink);
+  background:var(--paper);
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--lime);color:var(--ink)}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--font-display);font-weight:800;line-height:1.08;text-wrap:balance;letter-spacing:-0.01em}
+mark{background:var(--lime);color:var(--ink);padding:0 .12em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.section{padding:96px 0}
+.num{
+  font-family:var(--font-display);font-weight:500;font-size:13px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--ink-2);display:flex;align-items:center;gap:14px;margin-bottom:22px;
+}
+.num::after{content:"";flex:1;height:2px;background:var(--ink)}
+.section h2{font-size:clamp(28px,4.6vw,48px);margin-bottom:18px}
+.lead{font-size:19px;color:var(--ink-2);max-width:58ch;margin-bottom:48px}
+
+/* ---------- header ---------- */
+.site-header{
+  position:fixed;inset:0 0 auto 0;z-index:50;
+  background:oklch(0.965 0.008 95 / 0.9);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-bottom:2px solid var(--ink);
+}
+.site-header .wrap{display:flex;align-items:center;gap:24px;height:66px}
+.brand{font-family:var(--font-display);font-weight:900;font-size:15px;letter-spacing:.04em;white-space:nowrap}
+.header-tag{font-style:italic;font-size:13.5px;color:var(--ink-2);white-space:nowrap}
+.nav{display:flex;gap:28px;margin-left:auto}
+.nav a{
+  font-family:var(--font-display);font-weight:500;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-2);text-decoration:none;transition:color .2s ease;
+}
+.nav a:hover{color:var(--ink);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:.02em;
+  color:var(--paper);background:var(--ink);
+  padding:18px 34px;border:2px solid var(--ink);border-radius:0;
+  text-decoration:none;
+  box-shadow:5px 5px 0 var(--lime);
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--lime);background:var(--lime);color:var(--ink)}
+.btn:active{transform:translate(5px,5px);box-shadow:0 0 0 var(--lime)}
+.btn--small{padding:11px 20px;font-size:12.5px}
+.btn--ghost{background:transparent;color:var(--ink);box-shadow:5px 5px 0 oklch(0.21 0.02 260 / 0.18)}
+.btn--ghost:hover{background:var(--ink);color:var(--paper);box-shadow:2px 2px 0 var(--lime)}
+.btn--lime{background:var(--lime);color:var(--ink);box-shadow:5px 5px 0 oklch(0.965 0.008 95 / 0.9)}
+.btn--lime:hover{background:var(--paper);box-shadow:2px 2px 0 var(--lime)}
+
+/* ---------- hero ---------- */
+.hero{padding:150px 0 90px;position:relative}
+.hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:64px;align-items:center}
+.kicker{
+  display:inline-block;font-family:var(--font-display);font-weight:500;font-size:12.5px;
+  letter-spacing:.18em;text-transform:uppercase;
+  border:2px solid var(--ink);padding:8px 16px;margin-bottom:28px;background:var(--paper-2);
+}
+.hero h1{font-size:clamp(34px,5.4vw,64px);margin-bottom:26px}
+.hero .sub{font-size:20px;color:var(--ink-2);max-width:50ch;margin-bottom:34px}
+.hero .sub strong{color:var(--ink)}
+.hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-bottom:34px}
+.price{font-family:var(--font-display);font-weight:900;font-size:30px}
+.price small{font-family:var(--font-body);font-weight:400;font-style:italic;font-size:15px;color:var(--ink-2);margin-left:8px}
+.hero-facts{list-style:none;display:flex;flex-wrap:wrap;gap:10px}
+.hero-facts li{
+  font-family:var(--font-display);font-weight:500;font-size:12px;letter-spacing:.06em;
+  border:1.5px solid var(--ink);padding:7px 14px;background:var(--paper);
+}
+.cover-stage{justify-self:center;position:relative}
+.cover-book{
+  width:min(330px,74vw);transform:rotate(2.5deg);
+  border:2px solid var(--ink);
+  box-shadow:12px 12px 0 var(--ink);
+  transition:transform .3s ease;
+}
+.cover-stage:hover .cover-book{transform:rotate(0deg)}
+.cover-note{
+  position:absolute;left:-26px;bottom:34px;
+  font-family:var(--font-display);font-weight:700;font-size:12px;letter-spacing:.05em;
+  background:var(--lime);border:2px solid var(--ink);padding:9px 14px;transform:rotate(-6deg);
+  box-shadow:4px 4px 0 var(--ink);
+}
+
+/* ---------- marquee ---------- */
+.marquee{
+  background:var(--ink);color:var(--lime);overflow:hidden;white-space:nowrap;
+  border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+  padding:14px 0;
+}
+.marquee-track{display:inline-flex;animation:marquee 26s linear infinite;will-change:transform}
+.marquee span{
+  font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:.14em;
+  text-transform:uppercase;padding:0 26px;
+}
+.marquee span i{font-style:normal;color:var(--paper)}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ---------- боли ---------- */
+.pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.pain-card{
+  background:var(--paper);border:2px solid var(--ink);padding:30px 26px 26px;
+  box-shadow:7px 7px 0 var(--ink);
+  transition:transform .2s ease, box-shadow .2s ease;
+  position:relative;display:flex;flex-direction:column;
+}
+.pain-card:hover{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--ink)}
+.pain-card:nth-child(2){transform:rotate(.5deg)}
+.pain-card:nth-child(5){transform:rotate(-.5deg)}
+.pain-card:nth-child(2):hover,.pain-card:nth-child(5):hover{transform:rotate(0) translate(-3px,-3px)}
+.pain-idx{
+  font-family:var(--font-display);font-weight:900;font-size:40px;line-height:1;
+  color:var(--paper);-webkit-text-stroke:2px var(--ink);margin-bottom:14px;
+}
+.pain-card h3{
+  font-family:var(--font-body);font-weight:600;font-style:italic;
+  font-size:19px;margin-bottom:12px;line-height:1.35;
+}
+.pain-card p{color:var(--ink-2);font-size:15.5px;line-height:1.65}
+.pain-card p strong{color:var(--ink)}
+.pain-bridge{
+  margin-top:44px;font-size:clamp(19px,2.4vw,24px);font-weight:600;line-height:1.5;max-width:52ch;
+  border-left:4px solid var(--lime);padding-left:24px;
+}
+@media (max-width:1100px){.pain-grid{grid-template-columns:1fr 1fr}}
+
+/* ---------- демо ---------- */
+.demo-section{background:var(--paper-2);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.demo-card{
+  background:var(--ink);color:var(--paper);border:2px solid var(--ink);
+  box-shadow:10px 10px 0 var(--lime);
+  padding:34px;max-width:860px;margin:0 auto;
+}
+.demo-tabs{display:flex;gap:0;margin-bottom:26px;border:2px solid var(--paper);width:fit-content;max-width:100%}
+.demo-tab{
+  font-family:var(--font-display);font-weight:700;font-size:13px;letter-spacing:.04em;
+  background:transparent;color:var(--paper);border:0;padding:13px 22px;
+  transition:background .2s ease,color .2s ease;
+}
+.demo-tab + .demo-tab{border-left:2px solid var(--paper)}
+.demo-tab[aria-selected="true"]{background:var(--lime);color:var(--ink)}
+.demo-tab:focus-visible{outline-color:var(--lime)}
+.chat{display:grid;gap:16px;min-height:300px;align-content:start}
+.bubble{
+  padding:16px 20px;font-size:16.5px;line-height:1.6;max-width:88%;
+  opacity:0;transform:translateY(10px);transition:opacity .3s ease,transform .3s ease;
+}
+.bubble.show{opacity:1;transform:none}
+.bubble--ask{background:var(--lime);color:var(--ink);justify-self:end;font-weight:600}
+.bubble--ask .caret{display:inline-block;width:2px;height:1.1em;background:var(--ink);vertical-align:-0.15em;animation:blink .8s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.bubble--ans{background:oklch(0.30 0.03 260);color:oklch(0.93 0.01 240);justify-self:start}
+.bubble--ans .verdict{
+  display:inline-block;font-family:var(--font-display);font-weight:700;font-size:11px;
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;padding:4px 10px;
+}
+.verdict--bad{background:oklch(0.65 0.19 25);color:var(--ink)}
+.verdict--good{background:var(--lime);color:var(--ink)}
+.demo-replay{
+  margin-top:22px;background:transparent;border:2px solid var(--paper);color:var(--paper);
+  font-family:var(--font-display);font-weight:500;font-size:12.5px;letter-spacing:.08em;
+  text-transform:uppercase;padding:11px 20px;
+  transition:background .2s ease,color .2s ease;
+}
+.demo-replay:hover{background:var(--paper);color:var(--ink)}
+.demo-caption{
+  text-align:center;margin-top:26px;font-style:italic;color:var(--ink-2);font-size:16.5px;
+}
+
+/* ---------- как устроена ---------- */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:2px solid var(--ink)}
+.step{padding:34px 28px;border-left:2px solid var(--ink);background:var(--paper)}
+.step:first-child{border-left:0}
+.step-num{font-family:var(--font-display);font-weight:900;font-size:15px;letter-spacing:.1em;color:var(--ink-2);margin-bottom:14px}
+.step h3{font-size:21px;margin-bottom:12px}
+.step p{color:var(--ink-2);font-size:16.5px}
+.facts-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:2px solid var(--ink);border-top:0;
+  background:var(--ink);color:var(--paper);
+}
+.fact{padding:24px 22px;border-left:2px solid var(--paper)}
+.fact:first-child{border-left:0}
+.fact b{display:block;font-family:var(--font-display);font-weight:900;font-size:26px;color:var(--lime);margin-bottom:4px}
+.fact span{font-size:14.5px;color:oklch(0.85 0.01 240)}
+
+/* ---------- результат ---------- */
+.can-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0;border:2px solid var(--ink)}
+.can-list li{
+  display:flex;gap:18px;align-items:flex-start;padding:26px 28px;
+  border-top:2px solid var(--ink);background:var(--paper);font-size:17px;
+}
+.can-list li:nth-child(-n+2){border-top:0}
+.can-list li:nth-child(even){border-left:2px solid var(--ink)}
+.can-mark{
+  flex:none;font-family:var(--font-display);font-weight:900;font-size:15px;
+  background:var(--lime);border:2px solid var(--ink);width:34px;height:34px;
+  display:flex;align-items:center;justify-content:center;margin-top:2px;
+}
+
+/* ---------- FAQ ---------- */
+.faq{max-width:840px}
+.faq details{border:2px solid var(--ink);background:var(--paper);margin-bottom:-2px}
+.faq summary{
+  cursor:pointer;list-style:none;display:flex;align-items:center;gap:18px;
+  padding:24px 28px;font-family:var(--font-display);font-weight:700;font-size:16.5px;line-height:1.3;
+  transition:background .2s ease;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:hover{background:var(--paper-2)}
+.faq summary::after{
+  content:"+";margin-left:auto;flex:none;font-size:26px;font-weight:900;line-height:1;
+  transition:transform .2s ease;
+}
+.faq details[open] summary{background:var(--lime)}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq .faq-body{padding:0 28px 26px;color:var(--ink-2);font-size:16.5px;max-width:64ch}
+.faq .faq-body strong{color:var(--ink)}
+
+/* ---------- сравнение цены ---------- */
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:2px solid var(--ink)}
+.price-cell{padding:36px 30px;border-left:2px solid var(--ink);background:var(--paper)}
+.price-cell:first-child{border-left:0}
+.price-cell .tag{
+  font-family:var(--font-display);font-weight:500;font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-2);margin-bottom:16px;
+}
+.price-cell .amount{
+  font-family:var(--font-display);font-weight:900;font-size:clamp(24px,2.6vw,34px);
+  margin-bottom:12px;line-height:1.1;
+}
+.price-cell p{color:var(--ink-2);font-size:16px}
+.price-cell--win{background:var(--lime)}
+.price-cell--win .tag{color:var(--ink)}
+.price-cell--win p{color:var(--ink)}
+
+/* ---------- финал ---------- */
+.final{background:var(--ink);color:var(--paper);border-top:2px solid var(--ink)}
+.final .wrap{display:grid;grid-template-columns:auto 1fr;gap:56px;align-items:center}
+.final img{width:210px;transform:rotate(-2deg);border:2px solid var(--paper);box-shadow:10px 10px 0 var(--lime)}
+.final .num{color:oklch(0.75 0.02 240)}
+.final .num::after{background:var(--paper)}
+.final h2{font-size:clamp(26px,4vw,44px);margin-bottom:16px}
+.final h2 mark{color:var(--ink)}
+.final p{color:oklch(0.82 0.015 240);max-width:56ch;margin-bottom:28px;font-size:18px}
+.final-actions{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.final-price{font-family:var(--font-display);font-weight:900;font-size:34px;color:var(--lime)}
+.final-price small{font-family:var(--font-body);font-weight:400;font-style:italic;font-size:15px;color:oklch(0.75 0.02 240);margin-left:10px}
+
+/* ---------- footer ---------- */
+.site-footer{padding:44px 0 120px;border-top:2px solid var(--ink);background:var(--paper)}
+.site-footer .brand{white-space:normal;line-height:1.3}
+.footer-row{display:flex;flex-wrap:wrap;gap:10px 28px;justify-content:space-between;align-items:baseline;margin-bottom:20px}
+.site-footer small{color:var(--ink-2);font-size:14px}
+.privacy{
+  display:flex;gap:12px;align-items:flex-start;max-width:74ch;
+  font-size:14.5px;color:var(--ink-2);font-style:italic;
+  border:2px solid var(--ink);padding:16px 20px;background:var(--paper-2);
+}
+.privacy b{font-style:normal;color:var(--ink);font-family:var(--font-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;flex:none;margin-top:2px}
+
+/* ---------- sticky mobile bar ---------- */
+.sticky-bar{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;
+  background:var(--paper);border-top:2px solid var(--ink);
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+  align-items:center;gap:14px;
+  transform:translateY(110%);transition:transform .25s ease;
+}
+.sticky-bar.on{transform:none}
+.sticky-bar .sb-price{font-family:var(--font-display);font-weight:900;font-size:20px;white-space:nowrap}
+.sticky-bar .btn{flex:1;padding:13px 16px;font-size:13.5px}
+
+/* ---------- reveal ---------- */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .45s ease-out,transform .25s ease-out}
+.reveal.is-visible{opacity:1;transform:none}
+
+/* ---------- responsive ---------- */
+@media (max-width:960px){
+  .hero{padding:120px 0 70px}
+  .hero .wrap{grid-template-columns:1fr;gap:48px}
+  .cover-stage{order:-1}
+  .cover-book{width:min(240px,64vw)}
+  .pain-grid{grid-template-columns:1fr 1fr}
+  .header-tag{display:none}
+  .price-grid{grid-template-columns:1fr}
+  .price-cell{border-left:0;border-top:2px solid var(--ink)}
+  .price-cell:first-child{border-top:0}
+  .steps{grid-template-columns:1fr}
+  .step{border-left:0;border-top:2px solid var(--ink)}
+  .step:first-child{border-top:0}
+  .facts-strip{grid-template-columns:1fr 1fr}
+  .fact{border-left:0;border-top:2px solid var(--paper)}
+  .fact:nth-child(-n+2){border-top:0}
+  .fact:nth-child(even){border-left:2px solid var(--paper)}
+  .can-list{grid-template-columns:1fr}
+  .can-list li:nth-child(-n+2){border-top:2px solid var(--ink)}
+  .can-list li:first-child{border-top:0}
+  .can-list li:nth-child(even){border-left:0}
+  .final .wrap{grid-template-columns:1fr;gap:36px;text-align:left}
+  .nav{display:none}
+}
+@media (max-width:720px){
+  .sticky-bar{display:flex}
+  .site-footer{padding-bottom:150px}
+  .pain-grid{grid-template-columns:1fr}
+}
+@media (max-width:480px){
+  .section{padding:70px 0}
+  .hero-actions .btn{width:100%}
+  .demo-card{padding:22px 16px}
+  .demo-tab{font-size:11.5px;padding:12px 12px}
+  .pain-card:nth-child(2),.pain-card:nth-child(5){transform:none}
+  .site-header .wrap{gap:12px;padding:0 16px}
+  .site-header .brand span{display:none}
+  .btn--small{padding:10px 14px;font-size:11.5px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+  .marquee-track{animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#top" style="text-decoration:none">НЕЙРОСЕТИ<span style="font-weight:500"> / Панкратов</span></a>
+    <p class="header-tag">практическое руководство по ИИ</p>
+    <nav class="nav" aria-label="Разделы страницы">
+      <a href="#pains">Боли</a>
+      <a href="#demo">Демо</a>
+      <a href="#book">Книга</a>
+      <a href="#price">Цена</a>
+    </nav>
+    <a class="btn btn--small" href="https://www.litres.ru/book/oleg-mihaylovich-pan/neiroseti-uchit-sia-rabotat-zarabatyvat-prakticheskoe-74663617/" target="_blank" rel="noopener">Купить на ЛитРес</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="kicker reveal">Практическое руководство по ИИ · 2026</p>
+        <h1 class="reveal">Все вокруг уже пользуются нейросетями. <mark>Кроме вас?</mark></h1>
+        <p class="sub reveal">Коллега сдаёт отчёты быстрее вас — и не объясняет как. Ребёнок решает уроки с ИИ-репетитором. В разговорах — «промпты», «модели», «агенты», а вы киваете и молчите, чтобы не спросить глупость. <strong>Это поправимо: до той же уверенности — 150 страниц живым языком и неделя по 20 минут в день.</strong> Без технического образования и без иллюзий.</p>
+        <div class="hero-actions reveal">
+          <a class="btn" href="https://www.litres.ru/book/oleg-mihaylovich-pan/neiroseti-uchit-sia-rabotat-zarabatyvat-prakticheskoe-74663617/" target="_blank" rel="noopener">Купить на ЛитРес</a>
+          <a class="btn btn--ghost" href="https://www.litres.ru/book/oleg-mihaylovich-pan/neiroseti-uchit-sia-rabotat-zarabatyvat-prakticheskoe-74663617/chitat-onlayn/" target="_blank" rel="noopener">Читать фрагмент</a>
+          <p class="price">299 ₽<small>электронная книга — как чашка кофе</small></p>
+        </div>
+        <ul class="hero-facts reveal">
+          <li>150 страниц</li>
+          <li>18 глав</li>
+          <li>Библиотека промптов</li>
+          <li>Всё работает из России</li>
+          <li>12+</li>
+        </ul>
+      </div>
+      <div class="cover-stage reveal">
+        <img class="cover-book" data-cover="1" width="900" height="1287" alt="Обложка книги «Нейросети: учиться, работать, зарабатывать. Практическое руководство по ИИ» Олега Панкратова" fetchpriority="high">
+        <p class="cover-note">уже на ЛитРес →</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>тексты <i>·</i> договоры <i>·</i> таблицы <i>·</i> код без программиста <i>·</i> картинки <i>·</i> видео <i>·</i> музыка <i>·</i> озвучка <i>·</i> учёба детей <i>·</i> заработок <i>·</i> безопасность семьи <i>·</i></span>
+      <span>тексты <i>·</i> договоры <i>·</i> таблицы <i>·</i> код без программиста <i>·</i> картинки <i>·</i> видео <i>·</i> музыка <i>·</i> озвучка <i>·</i> учёба детей <i>·</i> заработок <i>·</i> безопасность семьи <i>·</i></span>
+    </div>
+  </div>
+
+  <!-- ============ БОЛИ ============ -->
+  <section class="section" id="pains">
+    <div class="wrap">
+      <p class="num reveal">01 — Узнаёте себя?</p>
+      <h2 class="reveal">Шесть мыслей, которые тихо говорят: <mark>вы отстаёте</mark></h2>
+      <p class="lead reveal">Нейросети давно не про «модные игрушки». Они уже лезут в работу, учёбу детей и даже в телефонные звонки. Счёт за незнание приходит в любом случае — временем, деньгами или спокойствием.</p>
+      <div class="pain-grid">
+        <article class="pain-card reveal">
+          <p class="pain-idx">01</p>
+          <h3>«А что такое промпт?..»</h3>
+          <p>В курилке и в чатах — «промпты», «модели», «агенты». Вы киваете и молчите, чтобы не спросить глупость. <strong>Отставание незаметно — ровно до момента, когда о нём спросят на собеседовании.</strong></p>
+        </article>
+        <article class="pain-card reveal">
+          <p class="pain-idx">02</p>
+          <h3>«Он просто успевает больше»</h3>
+          <p>Коллега сдаёт за час то, на что у вас уходит день. Он не умнее и не трудолюбивее — <strong>он уже знает, о чём просить ИИ</strong>, и предпочитает об этом не рассказывать.</p>
+        </article>
+        <article class="pain-card reveal">
+          <p class="pain-idx">03</p>
+          <h3>«Я пробовал. Ерунда какая-то»</h3>
+          <p>Спросили нейросеть о важном — получили гладкую, красивую, бесполезную воду. Вывод «это игрушка» неверен: <strong>проблема была в запросе, а не в модели.</strong> Это лечится за одну главу.</p>
+        </article>
+        <article class="pain-card reveal">
+          <p class="pain-idx">04</p>
+          <h3>«ИИ заменит половину профессий»</h3>
+          <p>Каждую неделю такая новость — и тревога висит без ответа: бежать осваивать или это про других? <strong>Ответ начинается с понимания</strong>, что ИИ может, а что — нет.</p>
+        </article>
+        <article class="pain-card reveal">
+          <p class="pain-idx">05</p>
+          <h3>«Мама, я сам сделал домашку»</h3>
+          <p>Учится ребёнок или списывает? Запретить невозможно, ругать бесполезно. <strong>Работают честные правила для школьников</strong> — их просто никто не озвучил родителям. В книге они есть.</p>
+        </article>
+        <article class="pain-card reveal">
+          <p class="pain-idx">06</p>
+          <h3>«Бабушка, это я. Срочно переведи деньги…»</h3>
+          <p>Голос настоящий — а внук нет: мошенники уже клонируют голоса и обзванивают старших. <strong>Три семейных правила</strong> из главы о безопасности закрывают девять из десяти таких рисков.</p>
+        </article>
+      </div>
+      <p class="pain-bridge reveal">Узнали себя хотя бы в двух? Это не про лень и не про возраст — просто никто не объяснил вам это по-человечески. Ниже — доказательство, что весь разрыв закрывается одним навыком.</p>
+    </div>
+  </section>
+
+  <!-- ============ ДЕМО: РАЗНИЦА ============ -->
+  <section class="section demo-section" id="demo">
+    <div class="wrap">
+      <p class="num reveal">02 — Проверьте сами</p>
+      <h2 class="reveal">Одна модель. Два запроса. <mark>Разные вселенные.</mark></h2>
+      <p class="lead reveal">Это реальная механика из книги: тот же сервис, та же минута времени. Слева — как спрашивает большинство. Справа — как учит глава 7.</p>
+
+      <div class="demo-card reveal" id="demoCard">
+        <div class="demo-tabs" role="tablist" aria-label="Варианты запроса">
+          <button class="demo-tab" id="tab-bad" role="tab" aria-selected="true" aria-controls="chat">Как спрашивают обычно</button>
+          <button class="demo-tab" id="tab-good" role="tab" aria-selected="false" aria-controls="chat">Как учит книга</button>
+        </div>
+        <div class="chat" id="chat" role="tabpanel" aria-live="polite"></div>
+        <button class="demo-replay" id="replay" type="button">↻ Показать ещё раз</button>
+      </div>
+      <p class="demo-caption reveal">И так — в каждой из 18 глав: сначала вы пробуете, потом понимаете, почему сработало.</p>
+    </div>
+  </section>
+
+  <!-- ============ КАК УСТРОЕНА ============ -->
+  <section class="section" id="book">
+    <div class="wrap">
+      <p class="num reveal">03 — Как устроена книга</p>
+      <h2 class="reveal">Не «почитать про ИИ», а выстроить навык</h2>
+      <p class="lead reveal">Каждая глава — короткий цикл. К концу книги у вас не «представление о теме», а рабочая привычка.</p>
+
+      <div class="steps reveal">
+        <div class="step">
+          <p class="step-num">ШАГ 1</p>
+          <h3>Понять</h3>
+          <p>Каждая глава начинается с эксперимента, который вы делаете за пять минут — раньше, чем читаете объяснения. Без формул: каждый термин — через аналогию из жизни.</p>
+        </div>
+        <div class="step">
+          <p class="step-num">ШАГ 2</p>
+          <h3>Попробовать</h3>
+          <p>Готовые промпты и честные кейсы: где сработало, где сломалось и почему. Включая ошибки — например, как Klarna заменила операторов ИИ, а потом вернула людей.</p>
+        </div>
+        <div class="step">
+          <p class="step-num">ШАГ 3</p>
+          <h3>Применить</h3>
+          <p>Мини-проект в конце каждой главы — на вашей работе, ваших документах, вашей семье. Сначала вы читаете. Потом вы делаете.</p>
+        </div>
+      </div>
+
+      <div class="facts-strip reveal">
+        <div class="fact"><b>18</b><span>глав + приложение с библиотекой промптов</span></div>
+        <div class="fact"><b>150</b><span>страниц — по 20 минут в день, неделя чтения</span></div>
+        <div class="fact"><b>100%</b><span>инструментов проверены на доступность из России</span></div>
+        <div><div class="fact" style="border:0"><b>12+</b><span>понятно школьнику, полезно руководителю</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ РЕЗУЛЬТАТ ============ -->
+  <section class="section" id="result" style="padding-top:0">
+    <div class="wrap">
+      <p class="num reveal">04 — Что изменится</p>
+      <h2 class="reveal">Через неделю после прочтения</h2>
+      <p class="lead reveal">Не «будете разбираться в ИИ». А конкретно:</p>
+      <ul class="can-list reveal">
+        <li><span class="can-mark">→</span>Ставите задачу любой модели так, чтобы получать нужное с первого–третьего захода</li>
+        <li><span class="can-mark">→</span>Разбираете договор или инструкцию за минуты, а не за вечер</li>
+        <li><span class="can-mark">→</span>Собираете себе маленькие рабочие инструменты без программиста</li>
+        <li><span class="can-mark">→</span>Знаете, сколько реально платят за ИИ-услуги в России — и где их оказывать</li>
+        <li><span class="can-mark">→</span>Договорились с детьми о правилах учёбы с ИИ — без скандалов</li>
+        <li><span class="can-mark">→</span>Научили родителей распознавать «звонок от внука» с клонированным голосом</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ FAQ / ВОЗРАЖЕНИЯ ============ -->
+  <section class="section" id="faq" style="padding-top:0">
+    <div class="wrap">
+      <p class="num reveal">05 — Честно</p>
+      <h2 class="reveal">Возражения, которые у вас уже есть</h2>
+      <p class="lead reveal">И ответы на них — без маркетинговых увёрток.</p>
+      <div class="faq reveal">
+        <details>
+          <summary>«Я не технарь — мне будет непонятно»</summary>
+          <div class="faq-body">Программистом быть не нужно — нужно уметь читать и разговаривать. В книге <strong>ноль формул</strong>: каждый термин объясняется через аналогию из жизни, глоссарий прилагается. Возрастной ценз — 12+.</div>
+        </details>
+        <details>
+          <summary>«Всё это есть бесплатно на YouTube»</summary>
+          <div class="faq-body">Есть. Тоннами — разрозненно, устаревшее, с рекламой сервисов. Здесь — <strong>система от понимания до мини-проекта</strong> в каждой главе, собранная по порядку и проверенная на практике.</div>
+        </details>
+        <details>
+          <summary>«Половина сервисов в России не работает»</summary>
+          <div class="faq-body">Книга написана в России и для России: честно отмечено, <strong>что работает напрямую и бесплатно</strong>, что — через агрегаторы и сколько это стоит в рублях.</div>
+        </details>
+        <details>
+          <summary>«Книга про ИИ устареет через полгода»</summary>
+          <div class="faq-body">Названия сервисов и цены — да, меняются каждые несколько месяцев, и книга честно об этом предупреждает. Поэтому она учит не кнопкам, а <strong>принципам: постановка задачи, проверка результата, понимание границ</strong>. Они переживут любые версии любых моделей.</div>
+        </details>
+        <details>
+          <summary>«У меня нет времени читать»</summary>
+          <div class="faq-body">150 страниц — это 20 минут в день в течение недели. А можно и вовсе <strong>не читать, а слушать</strong>: на ЛитРес есть аудиоверсия.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ЦЕНА ============ -->
+  <section class="section" id="price" style="padding-top:0">
+    <div class="wrap">
+      <p class="num reveal">06 — Сколько это стоит</p>
+      <h2 class="reveal">Не курс за тысячи. <mark>Чашка кофе.</mark></h2>
+      <p class="lead reveal">За навык «работать с нейросетями» сегодня просят по-разному. Сравните честно:</p>
+      <div class="price-grid reveal">
+        <div class="price-cell">
+          <p class="tag">Онлайн-курс «по нейросетям»</p>
+          <p class="amount">15 000–60 000 ₽</p>
+          <p>Месяц вебинаров по расписанию. Большинство бросает на второй неделе — и доступ «сгорает».</p>
+        </div>
+        <div class="price-cell">
+          <p class="tag">Час консультации специалиста</p>
+          <p class="amount">3 000–10 000 ₽</p>
+          <p>Ответы на вопросы, которые вы пока не знаете, как сформулировать.</p>
+        </div>
+        <div class="price-cell price-cell--win">
+          <p class="tag">Эта книга</p>
+          <p class="amount">299 ₽</p>
+          <p>Цена одного капучино. Система остаётся у вас навсегда — и работает, когда удобно вам, а не лектору.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ФИНАЛ ============ -->
+  <section class="section final" id="buy">
+    <div class="wrap">
+      <img class="reveal" data-cover="1" width="900" height="1287" loading="lazy" alt="Обложка книги «Нейросети: учиться, работать, зарабатывать»">
+      <div>
+        <p class="num reveal">07 — Решение</p>
+        <h2 class="reveal">Начните сегодня — пока «все вокруг» не ушли ещё дальше</h2>
+        <p class="reveal">«Нейросети: учиться, работать, зарабатывать. Практическое руководство по ИИ» — Олег Панкратов. Покупка и чтение — на ЛитРес: в приложении, в браузере или в fb2, epub и pdf. Не уверены — начните с бесплатного фрагмента.</p>
+        <div class="final-actions reveal">
+          <a class="btn btn--lime" href="https://www.litres.ru/book/oleg-mihaylovich-pan/neiroseti-uchit-sia-rabotat-zarabatyvat-prakticheskoe-74663617/" target="_blank" rel="noopener">Купить на ЛитРес</a>
+          <a class="btn" style="background:transparent;color:var(--paper);border-color:var(--paper);box-shadow:5px 5px 0 oklch(0.965 0.008 95 / 0.25)" href="https://www.litres.ru/book/oleg-mihaylovich-pan/neiroseti-uchit-sia-rabotat-zarabatyvat-prakticheskoe-74663617/chitat-onlayn/" target="_blank" rel="noopener">Читать фрагмент</a>
+          <a class="btn" style="background:transparent;color:var(--paper);border-color:var(--paper);box-shadow:5px 5px 0 oklch(0.965 0.008 95 / 0.25)" href="https://www.litres.ru/audiobook/oleg-mihaylovich-pan/neiroseti-uchit-sia-rabotat-zarabatyvat-prakticheskoe-74665903/" target="_blank" rel="noopener">Аудиоверсия</a>
+          <p class="final-price">299 ₽<small>или по подписке</small></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-row">
+      <p class="brand">НЕЙРОСЕТИ: учиться, работать, зарабатывать</p>
+      <small>© 2026 Олег Панкратов · Книга издана на <a href="https://www.litres.ru/author/oleg-mihaylovich-pankratov/" target="_blank" rel="noopener">ЛитРес</a></small>
+    </div>
+    <p class="privacy">
+      <b>Приватность</b>
+      <span>Этот сайт не собирает персональные данные: нет форм, счётчиков, cookies и сторонних скриптов — даже шрифты загружаются с этого же сайта. Кнопки ведут на ЛитРес, где действует политика конфиденциальности ЛитРес.</span>
+    </p>
+  </div>
+</footer>
+
+<!-- sticky mobile CTA -->
+<div class="sticky-bar" id="stickyBar">
+  <span class="sb-price">299 ₽</span>
+  <a class="btn" href="https://www.litres.ru/book/oleg-mihaylovich-pan/neiroseti-uchit-sia-rabotat-zarabatyvat-prakticheskoe-74663617/" target="_blank" rel="noopener">Купить на ЛитРес</a>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* Reveal on scroll */
+  var items = document.querySelectorAll(".reveal");
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    items.forEach(function (el) { el.classList.add("is-visible"); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    items.forEach(function (el) { io.observe(el); });
+  }
+
+  /* Sticky bar: show after hero, hide near final CTA */
+  var bar = document.getElementById("stickyBar");
+  var hero = document.querySelector(".hero");
+  var finale = document.getElementById("buy");
+  if (bar && hero && "IntersectionObserver" in window) {
+    var heroGone = false, finalVisible = false;
+    var update = function () { bar.classList.toggle("on", heroGone && !finalVisible); };
+    new IntersectionObserver(function (e) { heroGone = !e[0].isIntersecting; update(); }, { threshold: 0 }).observe(hero);
+    if (finale) new IntersectionObserver(function (e) { finalVisible = e[0].isIntersecting; update(); }, { threshold: 0.1 }).observe(finale);
+  } else if (bar) {
+    bar.classList.add("on");
+  }
+
+  /* Demo: bad prompt vs book prompt */
+  var SCENARIOS = {
+    bad: {
+      ask: "Напиши пост про нашу акцию",
+      verdict: "Вода",
+      verdictClass: "verdict--bad",
+      answer: "🚀 Не пропустите нашу невероятную акцию! Лучшие предложения только для вас! Успейте воспользоваться уникальной возможностью! Подробности — по ссылке. Ждём вас! ❤️🔥",
+      note: "Знакомо? Модель не виновата: ей не сказали ни кто вы, ни для кого пост, ни что именно нужно."
+    },
+    good: {
+      ask: "Ты — SMM-редактор пекарни в Твери. Аудитория: мамы 30–45 лет. Напиши пост на 60 слов о скидке 20% на хлеб после 19:00. Тон тёплый, без восклицательных знаков. В конце — адрес и часы работы.",
+      verdict: "Результат",
+      verdictClass: "verdict--good",
+      answer: "К девятнадцати часам на полках остаётся свежий хлеб, которому мы рады найти дом. С 19:00 до закрытия он дешевле на 20% — тёплый ужин начинается с хорошего хлеба. Ждём вас на Советской, 12, каждый день до 21:00.",
+      note: "Роль, контекст, формат, ограничения — формула из главы 2. Дальше в книге она применяется к документам, таблицам, коду и картинкам."
+    }
+  };
+
+  var chat = document.getElementById("chat");
+  var tabBad = document.getElementById("tab-bad");
+  var tabGood = document.getElementById("tab-good");
+  var replay = document.getElementById("replay");
+  var timers = [];
+  var current = "bad";
+  var played = false;
+
+  function clearTimers() {
+    timers.forEach(clearTimeout);
+    timers = [];
+  }
+  function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+
+  function render(key, animate) {
+    clearTimers();
+    current = key;
+    tabBad.setAttribute("aria-selected", key === "bad" ? "true" : "false");
+    tabGood.setAttribute("aria-selected", key === "good" ? "true" : "false");
+    var s = SCENARIOS[key];
+    chat.innerHTML =
+      '<div class="bubble bubble--ask"><span class="ask-text"></span><span class="caret"></span></div>' +
+      '<div class="bubble bubble--ans"><span class="verdict ' + s.verdictClass + '">' + s.verdict + '</span><br><span class="ans-text">' + s.answer + '</span></div>' +
+      '<div class="bubble bubble--ans" style="background:transparent;color:oklch(0.78 0.02 240);font-style:italic">' + s.note + '</div>';
+    var bubbles = chat.querySelectorAll(".bubble");
+    var askText = chat.querySelector(".ask-text");
+    var caret = chat.querySelector(".caret");
+    var ansText = chat.querySelector(".ans-text");
+
+    if (!animate || reduceMotion) {
+      askText.textContent = s.ask;
+      caret.style.display = "none";
+      bubbles.forEach(function (b) { b.classList.add("show"); });
+      return;
+    }
+    /* type the prompt */
+    var i = 0;
+    bubbles[0].classList.add("show");
+    (function typeChar() {
+      if (current !== key) return;
+      if (i <= s.ask.length) {
+        askText.textContent = s.ask.slice(0, i);
+        i++;
+        timers.push(setTimeout(typeChar, 26));
+      } else {
+        caret.style.display = "none";
+        later(function () {
+          if (current !== key) return;
+          ansText.style.visibility = "hidden";
+          bubbles[1].classList.add("show");
+          later(function () {
+            if (current !== key) return;
+            ansText.style.visibility = "";
+            bubbles[2].classList.add("show");
+          }, 700);
+        }, 450);
+      }
+    })();
+  }
+
+  tabBad.addEventListener("click", function () { render("bad", true); });
+  tabGood.addEventListener("click", function () { render("good", true); });
+  replay.addEventListener("click", function () { render(current, true); });
+
+  /* autoplay once when demo scrolls into view */
+  var demoCard = document.getElementById("demoCard");
+  if (demoCard && "IntersectionObserver" in window && !reduceMotion) {
+    new IntersectionObserver(function (e, obs) {
+      if (e[0].isIntersecting && !played) {
+        played = true;
+        render("bad", true);
+        obs.disconnect();
+      }
+    }, { threshold: 0.4 }).observe(demoCard);
+  } else {
+    render("bad", false);
+  }
+})();
+</script>
+<script src="cover.js"></script>
+</body>
+</html>
